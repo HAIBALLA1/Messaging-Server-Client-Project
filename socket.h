@@ -1,4 +1,3 @@
-
 #include <mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -157,14 +156,14 @@ void sauvegarde_message(MYSQL *con, const char* username, const char* message) {
     
     sprintf(requete, "INSERT INTO messages (username, message) VALUES('%s', '%s')", username, message);
     
-    //mysql_query est utilisée pour envoyer des commandes SQL au serveur MySQL en utilisant le pointeur conn pour exécuter la requête sur la connexion établie
+    
     if (mysql_query(con, requete)) {
         fprintf(stderr, "%s\n", mysql_error(con));
     }
 }
 
 
-// La fonction qui recoit les messages venant ds clients et envoyer aux destinateurs
+// La fonction qui recoit les messages venant des clients puis les  envoyer aux destinateurs
 void *Recevoir_Affiecher_Messages_des_clients(void *arg) {
    
     client_thread_data *data = (client_thread_data *)arg;
@@ -488,24 +487,6 @@ void Commence_Accepter_Connections(int serverSocketFD) {
         data->conn = mysql_init(NULL);
         MYSQL *con = data->conn;
                 
-        /*if (!data->conn) {
-           perror("Allocation impssible pour  client_thread_data");
-           free(data);
-           close(cli->sock);
-           free(cli);
-          continue;
-        }       */
-       
-  
-   /* if (!mysql_real_connect(data->conn, "localhost", "root", "password", "MESSAGERIEPROJECT", 0, NULL, 0)) {
-        fprintf(stderr, "Failed to connect to database: %s\n", mysql_error(data->conn));
-        mysql_close(data->conn);
-        close(cli->sock);
-        free(cli);
-        free(data);
-        continue;
-    }*/
-        
 
         // Interaction initiale pour la connexion ou l'inscription
         char buffer[1024];
@@ -576,7 +557,7 @@ void Commence_Accepter_Connections(int serverSocketFD) {
 }
 
 
-// cette fonction lit les messages de la console  et les envoyer au serveur  
+// cette fonction lit les messages de la console  puis elle doit les envoyer au serveur  
 void* lire_messages_de_la_console_envoiyer (void* arg){
     
     int descri_socket=*((int*)arg);
